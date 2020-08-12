@@ -71,7 +71,7 @@ async def inline_gallery(inline):
                              cached=True, text=VIEW_PROMPT,
                              reply_markup=kb)
 
-    inline.respond(cache_time=0)
+    inline.respond()
 
 
 exports = (
