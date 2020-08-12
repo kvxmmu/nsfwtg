@@ -37,6 +37,9 @@ class NSFWDatabase:
 
         return results
 
+    async def remove_pictures(self, user_id):
+        await self.execute("DELETE FROM pictures WHERE by_user = $1", user_id)
+
     async def get_pictures_count(self, user_id):
         return await self.execute("SELECT count(*) FROM pictures WHERE by_user = $1",
                                   user_id, fetch_method="fetchval")

@@ -1,12 +1,11 @@
 from awtg.filtering.manager import AsyncHandler
-from awtg.types import Message, InlineQuery
 
 from awtg.filtering.stdfilters.std import Command
 from awtg.filtering.stdfilters.std import requires_config
 
 from const import (GREETING, SEND_ME_A_PHOTO,
                    LIMIT_EXCEEDED, ADD_DONE,
-                   VIEW_PROMPT)
+                   VIEW_PROMPT, CONTENT_REMOVED)
 from database import NSFWDatabase, MAX_PICTURES
 
 from awtg.keyboard import RelativeInlineKeyboard
@@ -43,7 +42,17 @@ async def create_nsfw(message):
 
 
 @AsyncHandler
-async def inline_gallery(inline: InlineQuery):
+async def remove_nsfw(message):
+    config = message.memory['config']
+
+    async with NSFWDatabase(config['db']) as context:
+        await context.remove_pictures(message.data.from_.id)
+
+    message.reply(CONTENT_REMOVED)
+
+
+@AsyncHandler
+async def inline_gallery(inline):
     config = inline.memory['config']
 
     async with NSFWDatabase(config['db']) as context:
@@ -72,6 +81,12 @@ exports = (
 
     create_nsfw.add_filters(
         Command('create_nsfw')
+    ).add_mutual_callbacks(
+        requires_config
+    ),
+
+    remove_nsfw.add_filters(
+        Command('delete_nsfw')
     ).add_mutual_callbacks(
         requires_config
     ),
