@@ -1,0 +1,9 @@
+token: "1357764905:AAF5X435MLhmihKP1QG5a9d8AQ20y0PoR2Q"
+
+db {
+    user: "nsfw_bot"
+    password: "nsfw_bot"
+    database: "nsfw_bot"
+    host: "127.0.0.1"
+    port: 5432  # default postgresql port
+}
