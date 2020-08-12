@@ -25,7 +25,7 @@ async def create_nsfw(message):
         return message.reply(SEND_ME_A_PHOTO)
 
     config = message.memory['config']
-    photo = photos[0]
+    photo = photos[-1]
 
     file_url = await message.tg.get_file_url(photo.file_id)
 
