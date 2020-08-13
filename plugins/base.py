@@ -71,7 +71,7 @@ async def inline_gallery(inline: InlineQuery):
 
     async with NSFWDatabase(config['db']) as context:
         pictures = await context.get_pictures(inline.data.from_.id, MAX_PICTURES,
-                                              inline.data.query)
+                                              inline.data.query or None)
 
     for picture in pictures:
         kb = RelativeInlineKeyboard()
