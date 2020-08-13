@@ -1,5 +1,5 @@
 CREATED_FOR = '@progeri_chat'
-BOT_USERNAME = '@playground_bws_bot'
+BOT_USERNAME = '@%s'
 
 GREETING = 'Привет username! ' \
            'Этот бот создан для чата %s ' \

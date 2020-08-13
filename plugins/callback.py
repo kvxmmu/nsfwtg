@@ -3,7 +3,7 @@ from awtg.filtering.manager import AsyncHandler
 from awtg.filtering.stdfilters.callback import CustomBinRPC
 from awtg.filtering.stdfilters.std import requires_config
 
-from database import NSFWDatabase
+from database import NSFWDatabase, VIDEO
 from const import (BOT_NOT_STARTED, CHECK_PM,
                    CONTENT_NOT_FOUND, NO_RIGHTS)
 
@@ -18,10 +18,14 @@ async def view_nsfw(callback):
         except IndexError:
             return callback.alert(CONTENT_NOT_FOUND)
 
-    response = await callback.message.send_photo(pic['file_id'], chat_id=callback.data.from_.id)
+    if pic['type'] == VIDEO:
+        response = await callback.message.send_video(pic['file_id'], chat_id=callback.data.from_.id,
+                                                     caption=pic['caption'])
+    else:
+        response = await callback.message.send_photo(pic['file_id'], chat_id=callback.data.from_.id)
 
     if not response['ok']:
-        callback.alert(BOT_NOT_STARTED)
+        return callback.alert(BOT_NOT_STARTED)
 
     callback.notify(CHECK_PM)
 
